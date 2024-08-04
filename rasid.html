@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Collection Form</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    .form-group input, .form-group select {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+    .form-group button {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .form-group button:hover {
+        background-color: #0056b3;
+    }
+    .aggregated-data {
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Data Collection Form</h2>
+    <div class="form-group">
+        <label for="date">Date</label>
+        <input type="date" id="date" name="date">
+    </div>
+    <div class="form-group">
+        <label for="health_facility">Health Facility</label>
+        <select id="health_facility" name="health_facility">
+            <option value="facility1">Facility 1</option>
+            <option value="facility2">Facility 2</option>
+            <!-- Add more options as needed -->
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="individual_age">Individual Age</label>
+        <input type="number" id="individual_age" name="individual_age" min="0">
+    </div>
+    <div class="form-group">
+        <label for="individual_gender">Gender</label>
+        <select id="individual_gender" name="individual_gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+            <!-- Add more options as needed -->
+        </select>
+    </div>
+    <div class="form-group">
+        <button type="button" onclick="addIndividualData()">Add Individual Data</button>
+    </div>
+
+    <h3>Aggregated Data</h3>
+    <div class="aggregated-data">
+        <p>Total Males: <span id="total_males">0</span></p>
+        <p>Total Females: <span id="total_females">0</span></p>
+        <p>Total Others: <span id="total_others">0</span></p>
+        <p>Age Distribution:</p>
+        <ul>
+            <li>0-5: <span id="age_0_5">0</span></li>
+            <li>6-10: <span id="age_6_10">0</span></li>
+            <li>11-15: <span id="age_11_15">0</span></li>
+            <li>16-20: <span id="age_16_20">0</span></li>
+            <li>21-25: <span id="age_21_25">0</span></li>
+            <li>26-30: <span id="age_26_30">0</span></li>
+            <li>31-35: <span id="age_31_35">0</span></li>
+            <li>36-40: <span id="age_36_40">0</span></li>
+            <li>41-45: <span id="age_41_45">0</span></li>
+            <li>46-50: <span id="age_46_50">0</span></li>
+            <li>50+: <span id="age_50_plus">0</span></li>
+        </ul>
+    </div>
+
+</div>
+
+<script>
+    let data = {
+        males: 0,
+        females: 0,
+        others: 0,
+        ageGroups: {
+            "0_5": 0,
+            "6_10": 0,
+            "11_15": 0,
+            "16_20": 0,
+            "21_25": 0,
+            "26_30": 0,
+            "31_35": 0,
+            "36_40": 0,
+            "41_45": 0,
+            "46_50": 0,
+            "50_plus": 0
+        }
+    };
+
+    function addIndividualData() {
+        const age = parseInt(document.getElementById('individual_age').value);
+        const gender = document.getElementById('individual_gender').value;
+
+        if (gender === 'male') data.males++;
+        else if (gender === 'female') data.females++;
+        else data.others++;
+
+        if (age <= 5) data.ageGroups["0_5"]++;
+        else if (age <= 10) data.ageGroups["6_10"]++;
+        else if (age <= 15) data.ageGroups["11_15"]++;
+        else if (age <= 20) data.ageGroups["16_20"]++;
+        else if (age <= 25) data.ageGroups["21_25"]++;
+        else if (age <= 30) data.ageGroups["26_30"]++;
+        else if (age <= 35) data.ageGroups["31_35"]++;
+        else if (age <= 40) data.ageGroups["36_40"]++;
+        else if (age <= 45) data.ageGroups["41_45"]++;
+        else if (age <= 50) data.ageGroups["46_50"]++;
+        else data.ageGroups["50_plus"]++;
+
+        updateAggregatedData();
+    }
+
+    function updateAggregatedData() {
+        document.getElementById('total_males').textContent = data.males;
+        document.getElementById('total_females').textContent = data.females;
+        document.getElementById('total_others').textContent = data.others;
+
+        document.getElementById('age_0_5').textContent = data.ageGroups["0_5"];
+        document.getElementById('age_6_10').textContent = data.ageGroups["6_10"];
+        document.getElementById('age_11_15').textContent = data.ageGroups["11_15"];
+        document.getElementById('age_16_20').textContent = data.ageGroups["16_20"];
+        document.getElementById('age_21_25').textContent = data.ageGroups["21_25"];
+        document.getElementById('age_26_30').textContent = data.ageGroups["26_30"];
+        document.getElementById('age_31_35').textContent = data.ageGroups["31_35"];
+        document.getElementById('age_36_40').textContent = data.ageGroups["36_40"];
+        document.getElementById('age_41_45').textContent = data.ageGroups["41_45"];
+        document.getElementById('age_46_50').textContent = data.ageGroups["46_50"];
+        document.getElementById('age_50_plus').textContent = data.ageGroups["50_plus"];
+    }
+</script>
+
+</body>
+</html>
